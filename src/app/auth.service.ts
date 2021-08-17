@@ -35,10 +35,12 @@ export class AuthService {
   }
 
   get AppUser$(): Observable<AppUser | null> {
-    return this.user$.switchMap((user) => {
-      if (user) return this.userService.get(user.uid).valueChanges();
+    return this.user$.pipe(
+      switchMap((user) => {
+        if (user) return this.userService.get(user.uid).valueChanges();
 
-      return of(null);
-    });
+        return of(null);
+      })
+    );
   }
 }
