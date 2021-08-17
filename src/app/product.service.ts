@@ -10,4 +10,12 @@ export class ProductService {
   create(product: any) {
     return this.db.list('/products').push(product);
   }
+
+  getAll() {
+    return this.db.list('/products');
+  }
+
+  get(productId: any) {
+    return this.db.object('/products/' + productId).valueChanges();
+  }
 }
