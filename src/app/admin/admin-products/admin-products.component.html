@@ -12,7 +12,36 @@
     placeholder="Search..."
   />
 </p>
-<table class="table">
+
+<data-table
+  [items]="items"
+  [itemCount]="itemCount"
+  (reload)="reloadItems($event)"
+>
+  <data-table-column
+    [property]="'title'"
+    [header]="'Title'"
+    [sortable]="true"
+    [resizable]="true"
+  >
+  </data-table-column>
+  <data-table-column
+    [property]="'price'"
+    [header]="'Price'"
+    [sortable]="true"
+    [resizable]="true"
+  >
+  </data-table-column>
+  <ng-template #dataTableCell let-item="item">
+    {{ item.title | currency: "USD":true }}
+  </ng-template>
+  <data-table-column [property]="'$key'"> </data-table-column>
+  <ng-template #dataTableCell let-item="item">
+    <a [routerLink]="['/admin/products/', item.key]">Edit</a>
+  </ng-template>
+</data-table>
+
+<!-- <table class="table">
   <thead>
     <tr>
       <th>Title</th>
@@ -24,9 +53,7 @@
     <tr *ngFor="let p of filteredProducts">
       <td>{{ p.payload.val().title }}</td>
       <td>{{ p.payload.val().price }}</td>
-      <td>
-        <a [routerLink]="['/admin/products/', p.key]">Edit</a>
-      </td>
+      <td></td>
     </tr>
   </tbody>
-</table>
+</table> -->
