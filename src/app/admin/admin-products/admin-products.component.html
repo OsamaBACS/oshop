@@ -4,13 +4,13 @@
 </p>
 <br />
 <p>
-  <input
+  <!-- <input
     #query
     (keyup)="filter(query.value)"
     type="text"
     class="form-control"
     placeholder="Search..."
-  />
+  /> -->
 </p>
 
 <!-- <data-table
@@ -56,8 +56,8 @@
   </thead>
   <tbody>
     <tr *ngFor="let p of filteredProducts">
-      <td>{{ p.title }}</td>
-      <td>{{ p.price }}</td>
+      <td>{{ p.payload.val().title }}</td>
+      <td>{{ p.payload.val().price }}</td>
       <td><a [routerLink]="['/admin/products/', p.key]">Edit</a></td>
     </tr>
   </tbody>
