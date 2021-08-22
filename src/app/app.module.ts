@@ -6,7 +6,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { CustomFormsModule } from 'ng2-validation';
-import { DataTableModule } from 'angular-4-data-table';
+import { DataTablesModule } from 'angular-datatables';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -53,7 +53,7 @@ import { ProductService } from './product.service';
     NgbModule,
     FormsModule,
     CustomFormsModule,
-    DataTableModule,
+    DataTablesModule,
   ],
   providers: [
     AuthService,
