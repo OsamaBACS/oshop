@@ -11,7 +11,7 @@ import { switchMap } from 'rxjs/operators';
   styleUrls: ['./products.component.css'],
 })
 export class ProductsComponent {
-  products: Product[] = [];
+  products: any[] = [];
   filteredProducts: Product[] = [];
 
   category!: string;
@@ -19,10 +19,10 @@ export class ProductsComponent {
   constructor(route: ActivatedRoute, productService: ProductService) {
     productService
       .getAll()
-      .valueChanges()
+      .snapshotChanges()
       .pipe(
         switchMap((products) => {
-          this.products = products;
+          this.products = products as [];
           return route.queryParamMap;
         })
       )
@@ -30,7 +30,9 @@ export class ProductsComponent {
         this.category = params.get('category')!;
 
         this.filteredProducts = this.category
-          ? this.products.filter((p) => p.category === this.category)
+          ? this.products.filter(
+              (p) => p.payload.val().category === this.category
+            )
           : this.products;
       });
   }
