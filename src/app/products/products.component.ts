@@ -1,22 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFireList } from '@angular/fire/database';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../models/product';
 import { ProductService } from '../product.service';
 import { switchMap } from 'rxjs/operators';
+import { ShoppingCartService } from '../shopping-cart.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css'],
 })
-export class ProductsComponent {
+export class ProductsComponent implements OnInit, OnDestroy {
   products: any[] = [];
   filteredProducts: Product[] = [];
-
   category!: string;
+  cart: any;
+  subscription!: Subscription;
 
-  constructor(route: ActivatedRoute, productService: ProductService) {
+  constructor(
+    route: ActivatedRoute,
+    productService: ProductService,
+    private shoppingCartService: ShoppingCartService
+  ) {
     productService
       .getAll()
       .snapshotChanges()
@@ -35,5 +42,15 @@ export class ProductsComponent {
             )
           : this.products;
       });
+  }
+
+  async ngOnInit() {
+    this.subscription = (await this.shoppingCartService.getCart())
+      .valueChanges()
+      .subscribe((cart) => (this.cart = cart));
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
