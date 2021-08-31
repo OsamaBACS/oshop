@@ -14,18 +14,31 @@ import { take } from 'rxjs/operators';
 export class ShoppingCartService {
   constructor(private db: AngularFireDatabase) {}
 
-  private create() {
-    return this.db.list('/shopping-carts').push({
-      dateCreated: new Date().getTime(),
-    });
-  }
-
   async getCart(): Promise<Observable<ShoppingCart>> {
     let cartId = await this.getOrCreateCartId();
     return this.db
       .object('/shopping-carts/' + cartId)
       .snapshotChanges()
       .pipe(map((x: any) => new ShoppingCart(x.payload.val().items)));
+  }
+
+  async addToCart(product: any) {
+    this.updateItem(product, 1);
+  }
+
+  async removeFromCart(product: Product) {
+    this.updateItem(product, -1);
+  }
+
+  async clearCart() {
+    let cartId = await this.getOrCreateCartId();
+    this.db.object('/shopping-carts/' + cartId + '/items').remove();
+  }
+
+  private create() {
+    return this.db.list('/shopping-carts').push({
+      dateCreated: new Date().getTime(),
+    });
   }
 
   private getItem(cartId: string, productId: string) {
@@ -43,18 +56,9 @@ export class ShoppingCartService {
     return result.key!;
   }
 
-  async addToCart(product: any) {
-    this.updateItem(product, 1);
-  }
-
-  async removeFromCart(product: Product) {
-    this.updateItem(product, -1);
-  }
-
   private async updateItem(product: any, change: number) {
     let cartId = await this.getOrCreateCartId();
     let item$ = this.getItem(cartId, product.key);
-
     item$
       .valueChanges()
       .take(1)
