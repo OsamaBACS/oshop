@@ -6,6 +6,7 @@ import { ProductService } from '../product.service';
 import { switchMap } from 'rxjs/operators';
 import { ShoppingCartService } from '../shopping-cart.service';
 import { Subscription } from 'rxjs';
+import { ShoppingCart } from '../models/shopping-cart';
 
 @Component({
   selector: 'app-products',
@@ -16,7 +17,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   products: any[] = [];
   filteredProducts: Product[] = [];
   category!: string;
-  cart: any;
+  cart: ShoppingCart;
   subscription!: Subscription;
 
   constructor(

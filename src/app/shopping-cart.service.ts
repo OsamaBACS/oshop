@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireObject } from '@angular/fire/database';
 import { Product } from './models/product';
-// import { take } from 'rxjs/operators';
 import 'rxjs/add/operator/take';
 import { ShoppingCart } from './models/shopping-cart';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { ShoppingCartItem } from './models/shopping-cart-item';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -23,12 +24,14 @@ export class ShoppingCartService {
     let cartId = await this.getOrCreateCartId();
     return this.db
       .object('/shopping-carts/' + cartId)
-      .valueChanges()
-      .pipe(map((x: any) => new ShoppingCart(x.items)));
+      .snapshotChanges()
+      .pipe(map((x: any) => new ShoppingCart(x.payload.val().items)));
   }
 
   private getItem(cartId: string, productId: string) {
-    return this.db.object('/shopping-carts/' + cartId + '/items/' + productId);
+    return this.db.object<ShoppingCartItem>(
+      '/shopping-carts/' + cartId + '/items/' + productId
+    );
   }
 
   private async getOrCreateCartId(): Promise<string> {
@@ -41,23 +44,27 @@ export class ShoppingCartService {
   }
 
   async addToCart(product: any) {
-    this.updateItemQuantity(product, 1);
+    this.updateItem(product, 1);
   }
 
-  async removeFromCart(product: any) {
-    this.updateItemQuantity(product, -1);
+  async removeFromCart(product: Product) {
+    this.updateItem(product, -1);
   }
 
-  private async updateItemQuantity(product: any, change: number) {
+  private async updateItem(product: any, change: number) {
     let cartId = await this.getOrCreateCartId();
-    let item$: AngularFireObject<any> = this.getItem(cartId, product.key);
+    let item$ = this.getItem(cartId, product.key);
+
     item$
-      .snapshotChanges()
+      .valueChanges()
       .take(1)
       .subscribe((item) => {
-        if (item.payload.val())
-          item$.update({ quantity: item.payload.val().quantity + change });
-        else item$.set({ product: product.payload.val(), quantity: 1 });
+        item$.update({
+          title: product.payload.val().title,
+          imageUrl: product.payload.val().imageUrl,
+          price: product.payload.val().price,
+          quantity: !item ? 1 : item.quantity + change,
+        });
       });
   }
 }
