@@ -1,6 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { SnapshotAction } from '@angular/fire/database';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Product } from '../models/product';
 import { ShoppingCart } from '../models/shopping-cart';
+import { ShoppingCartItem } from '../models/shopping-cart-item';
 import { ShoppingCartService } from '../shopping-cart.service';
 
 @Component({
@@ -16,6 +20,7 @@ export class ProductCardComponent {
   constructor(private shoppingCartService: ShoppingCartService) {}
 
   addToCart() {
-    this.shoppingCartService.addToCart(this.product);
+    this.shoppingCartService.addToCart(this.product, '');
+    // console.log(this.product);
   }
 }

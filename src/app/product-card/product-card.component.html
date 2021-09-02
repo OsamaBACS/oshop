@@ -7,9 +7,7 @@
   />
   <div class="card-body">
     <h5 class="card-title">{{ product.payload.val().title }}</h5>
-    <p class="card-text">
-      {{ product.payload.val().price | currency: "USD":true }}
-    </p>
+    <p class="card-text">${{ product.payload.val().price | number: "2.2" }}</p>
   </div>
   <div class="card-footer">
     <div *ngIf="showActions && shoppingCart" class="d-grid gap-2">

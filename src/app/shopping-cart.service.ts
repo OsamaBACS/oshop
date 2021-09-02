@@ -22,12 +22,12 @@ export class ShoppingCartService {
       .pipe(map((x: any) => new ShoppingCart(x.payload.val().items)));
   }
 
-  async addToCart(product: any) {
-    this.updateItem(product, 1);
+  async addToCart(product: any, productType: string) {
+    this.updateItem(product, 1, productType);
   }
 
-  async removeFromCart(product: Product) {
-    this.updateItem(product, -1);
+  async removeFromCart(product: Product, productType: string) {
+    this.updateItem(product, -1, productType);
   }
 
   async clearCart() {
@@ -56,19 +56,31 @@ export class ShoppingCartService {
     return result.key!;
   }
 
-  private async updateItem(product: any, change: number) {
+  private async updateItem(product: any, change: number, productType: string) {
     let cartId = await this.getOrCreateCartId();
     let item$ = this.getItem(cartId, product.key);
     item$
       .valueChanges()
       .take(1)
       .subscribe((item) => {
-        item$.update({
-          title: product.payload.val().title,
-          imageUrl: product.payload.val().imageUrl,
-          price: product.payload.val().price,
-          quantity: !item ? 1 : item.quantity + change,
-        });
+        let quantity = !item ? 1 : item.quantity + change;
+        if (quantity === 0) item$.remove();
+        else
+          item$.update({
+            title:
+              productType !== 'shopping'
+                ? product.payload.val().title
+                : product.title,
+            imageUrl:
+              productType !== 'shopping'
+                ? product.payload.val().imageUrl
+                : product.imageUrl,
+            price:
+              productType !== 'shopping'
+                ? product.payload.val().price
+                : product.price,
+            quantity: quantity,
+          });
       });
   }
 }

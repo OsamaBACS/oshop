@@ -10,6 +10,7 @@ import { ShoppingCartService } from '../shopping-cart.service';
 })
 export class ShoppingCartComponent implements OnInit {
   cart$!: Observable<ShoppingCart>;
+  Shopping: string = 'shopping';
 
   constructor(private shoppingCartService: ShoppingCartService) {}
 
