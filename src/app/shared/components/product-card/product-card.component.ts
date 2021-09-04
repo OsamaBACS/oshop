@@ -2,10 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { SnapshotAction } from '@angular/fire/database';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Product } from '../models/product';
-import { ShoppingCart } from '../models/shopping-cart';
-import { ShoppingCartItem } from '../models/shopping-cart-item';
-import { ShoppingCartService } from '../shopping-cart.service';
+import { ShoppingCart } from '@shared/models/shopping-cart';
+import { ShoppingCartService } from '@shared/services/shopping-cart.service';
 
 @Component({
   selector: 'product-card',

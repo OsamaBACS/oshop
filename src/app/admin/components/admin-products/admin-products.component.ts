@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable, Subject } from 'rxjs';
-import { ProductService } from 'src/app/product.service';
-import { Product } from 'src/app/models/product';
 import { DataTableDirective } from 'angular-datatables';
+import { Product } from '@shared/models/product';
+import { ProductService } from '@shared/services/product.service';
 
 @Component({
   selector: 'app-admin-products',
