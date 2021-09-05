@@ -2,8 +2,10 @@
   class="navbar fixed-top navbar-expand-lg navbar-light bg-light rounded"
   aria-label="Eleventh navbar example"
 >
-  <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/">O</a>
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">
+      <i class="fa fa-leaf" aria-hidden="true"></i>
+    </a>
     <button
       class="navbar-toggler"
       type="button"
@@ -20,7 +22,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link" routerLink="/shopping-cart">
-            Shopping Cart
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
             <span
               class="badge rounded-pill bg-warning text-dark"
               *ngIf="cart$ | async as cart"
@@ -29,6 +31,8 @@
             </span>
           </a>
         </li>
+      </ul>
+      <ul class="navbar-nav mb-2 mb-lg-0">
         <ng-template #anonymousUser>
           <li class="nav-item">
             <a class="nav-link" routerLink="/login">Login</a>
