@@ -5,7 +5,7 @@
         <label for="title">Title</label>
         <input
           #title="ngModel"
-          [(ngModel)]="products.title"
+          [(ngModel)]="products.payload.val().title"
           name="title"
           id="title"
           type="text"
@@ -22,7 +22,7 @@
           <span class="input-group-text">$</span>
           <input
             #price="ngModel"
-            [(ngModel)]="products.price"
+            [(ngModel)]="products.payload.val().price"
             name="price"
             id="price"
             type="number"
@@ -40,7 +40,7 @@
         <label for="category">Category</label>
         <select
           #category="ngModel"
-          [(ngModel)]="products.category"
+          [(ngModel)]="products.payload.val().category"
           name="category"
           id="category"
           class="form-control"
@@ -62,7 +62,7 @@
         <label for="imageUrl">Image Url</label>
         <input
           #imageUrl="ngModel"
-          [(ngModel)]="products.imageUrl"
+          [(ngModel)]="products.payload.val().imageUrl"
           name="imageUrl"
           id="imageUrl"
           type="text"

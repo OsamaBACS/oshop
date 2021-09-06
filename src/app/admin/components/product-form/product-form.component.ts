@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { SnapshotAction } from '@angular/fire/database';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Product } from '@shared/models/product';
 import { CategoryService } from '@shared/services/category.service';
 import { ProductService } from '@shared/services/product.service';
 import { Observable } from 'rxjs';
@@ -12,7 +14,7 @@ import { take } from 'rxjs/operators';
 })
 export class ProductFormComponent implements OnInit {
   categories$: Observable<any[]>;
-  products: any = {};
+  products: SnapshotAction<Product>;
   id: any;
 
   constructor(
@@ -27,6 +29,7 @@ export class ProductFormComponent implements OnInit {
     if (this.id)
       this.productService
         .get(this.id)
+        .snapshotChanges()
         .pipe(take(1))
         .subscribe((p) => (this.products = p));
   }
